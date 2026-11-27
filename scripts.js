@@ -8,7 +8,7 @@ const NO_MESSAGE = "Yk you should choose yes";
 const PADDING = 20;
 const NO_BG_IMAGE = './assets/seatdepression.webp';
 const MAIN_MUSIC = './assets/sonican-love-in-lofi-568502.mp3';
-const SAD_MUSIC = null; // put a sad track path here later, e.g. './assets/sad_music.mp3'
+const SAD_MUSIC = './assets/zephiramusic-lofi-sad-612435.mp3';
 
 const GESTURE_EVENTS = ['pointerdown', 'click', 'touchend', 'keydown'];
 
@@ -108,15 +108,15 @@ function switchToSadMusic() {
     // Make sure the main track can't be restarted by a late gesture
     stopListeningForGesture();
 
+    music.pause();
+
     if (!SAD_MUSIC) {
-        // No sad track yet, so just stop the music on the No path
-        music.pause();
         return;
     }
 
-    music.pause();
     music.src = SAD_MUSIC;
     music.currentTime = 0;
+    music.loop = true;
     music.play().catch(() => {});
 }
 
