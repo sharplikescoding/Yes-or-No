@@ -1,0 +1,106 @@
+body {
+    background-image: url("./assets/😍.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    font-family: "Roboto", sans-serif;
+}
+
+.question {
+    text-align: center;
+    padding: 0 20px;
+    transform-origin: center center;
+    animation: bob 2.5s ease-in-out infinite;
+}
+
+.question p {
+    display: inline-block;
+    font-family: "Roboto", sans-serif;
+    font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 700;
+    margin: 0;
+    transform-origin: center center;
+    animation: tilt 3.5s ease-in-out infinite;
+}
+
+@keyframes bob {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes tilt {
+
+    0%,
+    100% {
+        transform: rotate(-1.5deg);
+    }
+
+    50% {
+        transform: rotate(1.5deg);
+    }
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.no_button {
+    width: min(220px, 40vw);
+    height: 75px;
+    font-family: "Roboto", sans-serif;
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 700;
+    color: #ffffff;
+    border: none;
+    border-radius: 16px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    touch-action: manipulation;
+    background-color: #FF5353;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+    transition: top 0.2s ease, left 0.2s ease;
+}
+
+.yes_button {
+    width: min(220px, 40vw);
+    height: 75px;
+    font-family: "Roboto", sans-serif;
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 700;
+    color: #ffffff;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    touch-action: manipulation;
+    background: linear-gradient(90deg, #73D14E, #aaff00);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+
+    transition-duration: 0.2s;
+}
+
+.yes_button:hover {
+    filter: brightness(110%);
+    scale: 110%;
+
+    transition-duration: 0.2s;
+}
