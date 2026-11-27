@@ -5,6 +5,8 @@ const question = document.querySelector('.question');
 const NO_MESSAGE = "Yk you should choose yes";
 const PADDING = 20;
 const NO_BG_IMAGE = './assets/seatdepression.webp';
+const MAIN_MUSIC = './assets/sonican-love-in-lofi-568502.mp3';
+const SAD_MUSIC = null; // put a sad track path here later, e.g. './assets/sad_music.mp3'
 
 let yesClickCount = 0;
 let noAttempts = 0;
@@ -16,6 +18,39 @@ const originalNoStyle = noBtn.getAttribute('style');
 // Preload the new background so it appears instantly when needed
 const preloadedBg = new Image();
 preloadedBg.src = NO_BG_IMAGE;
+
+// Music
+const music = new Audio(MAIN_MUSIC);
+music.loop = true;
+music.volume = 0.5;
+
+function startMusic() {
+    music.play().then(() => {
+        // Started successfully, so stop listening for the first gesture
+        document.removeEventListener('click', startMusic);
+        document.removeEventListener('touchend', startMusic);
+        document.removeEventListener('keydown', startMusic);
+    }).catch(() => {
+        // Browser blocked it, so try again on the next gesture
+    });
+}
+
+document.addEventListener('click', startMusic);
+document.addEventListener('touchend', startMusic);
+document.addEventListener('keydown', startMusic);
+
+function switchToSadMusic() {
+    if (!SAD_MUSIC) {
+        // No sad track yet, so just stop the music on the No path
+        music.pause();
+        return;
+    }
+
+    music.pause();
+    music.src = SAD_MUSIC;
+    music.currentTime = 0;
+    music.play().catch(() => {});
+}
 
 function resetNoButton() {
     // Remove the invisible spacer if one was created
@@ -45,7 +80,7 @@ function yesAction() {
         question.innerHTML = `<p>Was that an honest yes?</p>`;
         resetNoButton();
     } else {
-        // Yes clicked on the "honest yes?" question (background stays the same)
+        // Yes clicked on the "honest yes?" question (background and music stay the same)
         question.innerHTML = `<p>Really?? Wow.. well what now... (text me)</p>`;
         hideButtons();
     }
@@ -53,8 +88,9 @@ function yesAction() {
 
 function noAction() {
     // No clicked on the "honest yes?" question
-    question.innerHTML = `<p>Text me why you wouldn't :'(</p>`;
+    question.innerHTML = `<p>Text me why you wouldn't</p>`;
     document.body.style.backgroundImage = `url("${NO_BG_IMAGE}")`;
+    switchToSadMusic();
     hideButtons();
 }
 
