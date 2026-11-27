@@ -8,6 +8,8 @@ const NO_BG_IMAGE = './assets/seatdepression.webp';
 const MAIN_MUSIC = './assets/sonican-love-in-lofi-568502.mp3';
 const SAD_MUSIC = null; // put a sad track path here later, e.g. './assets/sad_music.mp3'
 
+const GESTURE_EVENTS = ['pointerdown', 'click', 'touchend', 'keydown'];
+
 let yesClickCount = 0;
 let noAttempts = 0;
 let spacer = null;
@@ -24,22 +26,33 @@ const music = new Audio(MAIN_MUSIC);
 music.loop = true;
 music.volume = 0.5;
 
+function stopListeningForGesture() {
+    GESTURE_EVENTS.forEach((eventName) => {
+        document.removeEventListener(eventName, startMusic);
+    });
+}
+
 function startMusic() {
     music.play().then(() => {
-        // Started successfully, so stop listening for the first gesture
-        document.removeEventListener('click', startMusic);
-        document.removeEventListener('touchend', startMusic);
-        document.removeEventListener('keydown', startMusic);
+        // Started successfully, so stop listening for gestures
+        stopListeningForGesture();
     }).catch(() => {
         // Browser blocked it, so try again on the next gesture
     });
 }
 
-document.addEventListener('click', startMusic);
-document.addEventListener('touchend', startMusic);
-document.addEventListener('keydown', startMusic);
+// Try to start the moment the page loads
+startMusic();
+
+// Fallback: start on the first gesture if autoplay was blocked
+GESTURE_EVENTS.forEach((eventName) => {
+    document.addEventListener(eventName, startMusic);
+});
 
 function switchToSadMusic() {
+    // Make sure the main track can't be restarted by a late gesture
+    stopListeningForGesture();
+
     if (!SAD_MUSIC) {
         // No sad track yet, so just stop the music on the No path
         music.pause();
