@@ -78,6 +78,9 @@ body {
     background-color: #FF5353;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
     transition: top 0.2s ease, left 0.2s ease;
+        cursor: pointer;
+
+    transition-duration: 0.2s;
 }
 
 .yes_button {
@@ -99,6 +102,13 @@ body {
 }
 
 .yes_button:hover {
+    filter: brightness(110%);
+    scale: 110%;
+
+    transition-duration: 0.2s;
+}
+
+.no_button:hover {
     filter: brightness(110%);
     scale: 110%;
 
