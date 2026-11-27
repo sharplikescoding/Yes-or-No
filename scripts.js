@@ -1,6 +1,8 @@
 const noBtn = document.querySelector('.no_button');
 const yesBtn = document.querySelector('.yes_button');
 const question = document.querySelector('.question');
+const volumeBtn = document.querySelector('.volume_button');
+const volumeSlider = document.querySelector('.volume_slider');
 
 const NO_MESSAGE = "Yk you should choose yes";
 const PADDING = 20;
@@ -10,9 +12,15 @@ const SAD_MUSIC = null; // put a sad track path here later, e.g. './assets/sad_m
 
 const GESTURE_EVENTS = ['pointerdown', 'click', 'touchend', 'keydown'];
 
+const ICON_BASE = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>';
+const ICON_LOW = '<path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>';
+const ICON_HIGH = '<path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>';
+const ICON_MUTED = '<line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>';
+
 let yesClickCount = 0;
 let noAttempts = 0;
 let spacer = null;
+let lastVolume = 0.5;
 
 // Remember the No button's original inline style so it can be restored later
 const originalNoStyle = noBtn.getAttribute('style');
@@ -24,7 +32,54 @@ preloadedBg.src = NO_BG_IMAGE;
 // Music
 const music = new Audio(MAIN_MUSIC);
 music.loop = true;
-music.volume = 0.5;
+music.volume = lastVolume;
+
+// Volume control
+function updateVolumeUI() {
+    const level = music.muted ? 0 : music.volume;
+    const percent = Math.round(level * 100);
+    let shapes = '';
+
+    volumeSlider.value = percent;
+    volumeSlider.style.setProperty('--fill', `${percent}%`);
+
+    if (level === 0) {
+        shapes = ICON_BASE + ICON_MUTED;
+    } else if (level < 0.5) {
+        shapes = ICON_BASE + ICON_LOW;
+    } else {
+        shapes = ICON_BASE + ICON_HIGH;
+    }
+
+    volumeBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${shapes}</svg>`;
+}
+
+volumeSlider.addEventListener('input', () => {
+    const value = Number(volumeSlider.value) / 100;
+
+    music.volume = value;
+    music.muted = value === 0;
+
+    if (value > 0) {
+        lastVolume = value;
+    }
+
+    updateVolumeUI();
+});
+
+volumeBtn.addEventListener('click', () => {
+    if (music.muted || music.volume === 0) {
+        music.muted = false;
+        music.volume = lastVolume;
+    } else {
+        lastVolume = music.volume;
+        music.muted = true;
+    }
+
+    updateVolumeUI();
+});
+
+updateVolumeUI();
 
 function stopListeningForGesture() {
     GESTURE_EVENTS.forEach((eventName) => {
