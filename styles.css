@@ -114,3 +114,93 @@ body {
 
     transition-duration: 0.2s;
 }
+
+.volume_control {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.volume_button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+    touch-action: manipulation;
+    transition: transform 0.2s ease;
+}
+
+.volume_button:hover {
+    transform: scale(1.15);
+}
+
+.volume_button svg {
+    width: 24px;
+    height: 24px;
+}
+
+.volume_slider {
+    --fill: 50%;
+    -webkit-appearance: none;
+    appearance: none;
+    width: min(140px, 28vw);
+    height: 8px;
+    border-radius: 999px;
+    outline: none;
+    cursor: pointer;
+    background:
+        linear-gradient(90deg, #73D14E, #aaff00) 0 0 / var(--fill) 100% no-repeat,
+        rgba(255, 255, 255, 0.45);
+}
+
+.volume_slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    transition: transform 0.15s ease;
+}
+
+.volume_slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.volume_slider::-moz-range-track {
+    background: transparent;
+    height: 8px;
+}
+
+.volume_slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    transition: transform 0.15s ease;
+}
+
+.volume_slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+}
